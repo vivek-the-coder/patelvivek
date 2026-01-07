@@ -87,6 +87,7 @@ const ScrambleText = ({ text, className }) => {
       className={className} 
       onMouseEnter={() => setTrigger(true)}
       onMouseLeave={() => setTrigger(false)}
+      onTouchStart={() => setTrigger(true)}
     >
       {trigger ? scrambled : text}
     </span>
@@ -117,13 +118,13 @@ const LoadingScreen = ({ onComplete }) => {
         setStatus(statuses[Math.floor((next / 100) * statuses.length)]);
         return next;
       });
-    }, 150);
+    }, 100);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-[#010302] z-[999] flex flex-col items-center justify-center font-mono">
-      <div className="w-64 space-y-4">
+    <div className="fixed inset-0 bg-[#010302] z-[999] flex flex-col items-center justify-center font-mono p-6">
+      <div className="w-full max-w-xs space-y-4">
         <div className="flex justify-between text-[10px] text-emerald-500 font-black tracking-widest">
           <span className="animate-pulse">DECRYPTING_IDENTITY</span>
           <span>{percent}%</span>
@@ -134,7 +135,7 @@ const LoadingScreen = ({ onComplete }) => {
             style={{ width: `${percent}%` }}
           />
         </div>
-        <div className="text-[8px] text-emerald-800 font-bold uppercase tracking-[0.2em] h-4">
+        <div className="text-[8px] text-emerald-800 font-bold uppercase tracking-[0.2em] h-4 text-center">
           {status}
         </div>
       </div>
@@ -156,12 +157,12 @@ const IntelLink = ({ name }) => {
   const intel = INTEL_DB[name] || "Technical asset analyzed in security operations.";
 
   return (
-    <div className="relative inline-block group" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+    <div className="relative inline-block group" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onClick={() => setShow(!show)}>
       <span className="text-emerald-400 font-bold underline decoration-emerald-500/30 decoration-dashed underline-offset-4 cursor-help transition-colors hover:text-emerald-300">
         {name}
       </span>
       {show && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 z-[60] animate-intel-pop pointer-events-none">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-40 sm:w-48 z-[60] animate-intel-pop pointer-events-none">
           <div className="bg-[#051109] border border-emerald-500/50 p-2 rounded shadow-[0_0_20px_rgba(16,185,129,0.2)] backdrop-blur-md">
             <div className="flex items-center gap-1.5 mb-1 border-b border-emerald-500/20 pb-1">
               <Info size={10} className="text-emerald-500" />
@@ -220,10 +221,11 @@ const KaliTerminal = ({ onClose }) => {
         setHistory(prev => [...prev, `\x1b[31m[!] Error: Command '${cleanCmd}' not recognized.\x1b[0m`]);
     }
     setIsProcessing(false);
+    setInput("");
   };
 
   return (
-    <div className="bg-[#020503] border-t-2 border-emerald-900/50 h-[400px] flex flex-col font-mono text-[11px] z-50 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] animate-slide-up overflow-hidden">
+    <div className="fixed bottom-16 sm:bottom-0 left-0 right-0 sm:left-auto sm:right-0 sm:w-[450px] bg-[#020503] border-t-2 border-emerald-900/50 h-[40vh] sm:h-[400px] flex flex-col font-mono text-[11px] z-[150] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] animate-slide-up overflow-hidden">
       <div className="px-4 py-2 bg-[#051109] border-b border-emerald-500/10 flex justify-between items-center">
         <div className="flex items-center gap-4">
            <div className="flex gap-1.5">
@@ -238,7 +240,7 @@ const KaliTerminal = ({ onClose }) => {
       </div>
       
       <div className="flex flex-1 min-h-0">
-        <div ref={scrollRef} className="flex-1 p-6 overflow-y-auto custom-scrollbar text-emerald-400/90 leading-relaxed bg-[#020402]">
+        <div ref={scrollRef} className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar text-emerald-400/90 leading-relaxed bg-[#020402]">
           {history.map((line, i) => (
             <div key={i} className="whitespace-pre-wrap">
               {line.split('\x1b').map((part, pi) => {
@@ -254,7 +256,13 @@ const KaliTerminal = ({ onClose }) => {
             <div className="flex items-center gap-2 mt-4">
               <span className="text-emerald-500 font-black">➜</span>
               <span className="text-emerald-500 font-black">$</span>
-              <input className="bg-transparent border-none outline-none text-emerald-100 flex-1 caret-emerald-500 font-bold" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && processCommand(input) && setInput("")} autoFocus />
+              <input 
+                className="bg-transparent border-none outline-none text-emerald-100 flex-1 caret-emerald-500 font-bold" 
+                value={input} 
+                onChange={(e) => setInput(e.target.value)} 
+                onKeyDown={(e) => e.key === 'Enter' && processCommand(input)} 
+                autoFocus 
+              />
             </div>
           )}
         </div>
@@ -271,9 +279,9 @@ const WindowFrame = ({ title, children, active, subtitle }) => (
         <div className={`w-1 h-1 rounded-full ${active ? 'bg-emerald-500 animate-pulse' : 'bg-emerald-900'}`} />
         <ScrambleText text={title} />
       </span>
-      {subtitle && <span className="text-[8px] text-emerald-900 font-bold uppercase">{subtitle}</span>}
+      {subtitle && <span className="hidden sm:inline text-[8px] text-emerald-900 font-bold uppercase">{subtitle}</span>}
     </div>
-    <div className="relative flex-1 p-6 overflow-y-auto custom-scrollbar">{children}</div>
+    <div className="relative flex-1 p-4 sm:p-6 overflow-visible">{children}</div>
   </div>
 );
 
@@ -282,112 +290,110 @@ const Overview = () => {
   const { displayedText: typedBio } = useTypewriter(bio, 10, 300);
 
   return (
-    <div className="grid grid-cols-12 gap-6 pb-12">
-      <div className="col-span-12 space-y-6">
-        <WindowFrame title="01_OPERATIONAL_STATUS" active={true} subtitle="Core_Identity">
-          <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-              <div className="space-y-2">
-                <h2 className="text-5xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none overflow-hidden">
-                   <span className="inline-block px-1 animate-slide-up-reveal">
-                     <span className="text-emerald-500">Hello, I'm Vivek</span>
-                   </span>
-                </h2>
-                <div className="text-emerald-400 font-bold text-xs tracking-widest uppercase flex items-center gap-2">
-                  <div className="h-[2px] w-4 bg-emerald-500 animate-ping" />
-                  <ScrambleText text="3rd Year B.Tech CSE // Defensive Security Specialist" />
+    <div className="flex flex-col gap-6 pb-6">
+      <WindowFrame title="01_OPERATIONAL_STATUS" active={true} subtitle="Core_Identity">
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div className="space-y-2">
+              <h2 className="text-3xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-tight overflow-hidden">
+                 <span className="inline-block px-1 animate-slide-up-reveal">
+                   <span className="text-emerald-500">Hello, I'm Vivek</span>
+                 </span>
+              </h2>
+              <div className="text-emerald-400 font-bold text-[10px] sm:text-xs tracking-widest uppercase flex items-center gap-2">
+                <div className="h-[2px] w-4 bg-emerald-500 animate-ping" />
+                <ScrambleText text="3rd Year B.Tech CSE // Defensive Security Specialist" />
+              </div>
+            </div>
+            
+            <div className="flex gap-4">
+              {[Linkedin, Github, Mail].map((Icon, i) => (
+                <a key={i} href="#" className="p-2 border border-emerald-900/30 rounded text-emerald-900 hover:text-emerald-500 hover:border-emerald-500/50 transition-all bg-emerald-500/5">
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          <div className="text-emerald-100/70 text-sm md:text-base leading-relaxed border-l-2 border-emerald-500/30 pl-4 md:pl-5 min-h-[4rem] font-medium max-w-4xl">
+            {typedBio}
+            <span className="inline-block w-2 h-4 bg-emerald-500 ml-1 animate-pulse" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 animate-reveal" style={{ animationDelay: '800ms' }}>
+            <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
+              <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={14} className="group-hover:rotate-12 transition-transform" /> Defensive Security & SOC</h4>
+              <div className="text-[11px] text-emerald-100/40 leading-relaxed mb-3">
+                I primarily work with <IntelLink name="SIEM" /> platforms and <IntelLink name="MS Defender XDR" /> to monitor, analyze, and respond to security events. 
+                My focus is on understanding attacker behavior, correlating events across systems, and reducing noise so real threats are detected early.
+              </div>
+            </div>
+            <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
+              <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Cpu size={14} className="group-hover:animate-spin-slow" /> Other Skills</h4>
+              <div className="space-y-3">
+                <div className="text-[10px] text-emerald-100/40 leading-tight">
+                  Working knowledge that allows me to adapt across security environments:
+                </div>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[9px] text-emerald-100/50 font-bold uppercase">
+                  <span>• Linux/Windows Logging</span>
+                  <span>• <IntelLink name="Wireshark" /> Analysis</span>
+                  <span>• <IntelLink name="MITRE ATT&CK" /></span>
+                  <span>• <IntelLink name="Python" /> (Log Parsing)</span>
+                  <span>• Basic Cloud (AWS)</span>
                 </div>
               </div>
-              
-              <div className="flex gap-4">
-                {[Linkedin, Github, Mail].map((Icon, i) => (
-                  <a key={i} href="#" className="p-2 border border-emerald-900/30 rounded text-emerald-900 hover:text-emerald-500 hover:border-emerald-500/50 transition-all bg-emerald-500/5">
-                    <Icon size={16} />
-                  </a>
+            </div>
+          </div>
+        </div>
+      </WindowFrame>
+
+      <WindowFrame title="02_RESEARCH_TRACK" subtitle="Current_Focus">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
+                <Target size={14} /> Currently Working On
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { t: "SOC Detection Lab", d: "Simulated enterprise environment; ingesting logs into SIEM, creating rules, and documenting workflows." },
+                  { t: "Incident Response Simulation", d: "Simulating phishing/malware incidents to practice structured response and remediation." },
+                  { t: "Log Correlation Practice", d: "Identifying multi-stage attacks and abnormal behavior through correlation scripts." }
+                ].map((item, idx) => (
+                  <div key={idx} className="border-l border-emerald-900 pl-4 py-1 group/item animate-reveal" style={{ animationDelay: `${idx * 200 + 1000}ms` }}>
+                    <div className="text-[10px] text-emerald-400 font-black uppercase group-hover/item:text-emerald-300 transition-colors">{item.t}</div>
+                    <div className="text-[9px] text-emerald-100/40 leading-tight mt-1">{item.d}</div>
+                  </div>
                 ))}
               </div>
             </div>
-            
-            <div className="text-emerald-100/70 text-base leading-relaxed border-l-2 border-emerald-500/30 pl-5 min-h-[4rem] font-medium max-w-4xl">
-              {typedBio}
-              <span className="inline-block w-2 h-4 bg-emerald-500 ml-1 animate-pulse" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 animate-reveal" style={{ animationDelay: '800ms' }}>
-              <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
-                <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={14} className="group-hover:rotate-12 transition-transform" /> Defensive Security & SOC</h4>
-                <div className="text-[11px] text-emerald-100/40 leading-relaxed mb-3">
-                  I primarily work with <IntelLink name="SIEM" /> platforms and <IntelLink name="MS Defender XDR" /> to monitor, analyze, and respond to security events. 
-                  My focus is on understanding attacker behavior, correlating events across systems, and reducing noise so real threats are detected early.
-                </div>
+          </div>
+          
+          <div className="space-y-6 animate-reveal" style={{ animationDelay: '1500ms' }}>
+            <div className="space-y-4">
+              <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
+                <BookOpen size={14} /> Interests
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {["Threat Intel", "Detection Eng", "IR & Forensics", "Scale Monitoring"].map(interest => (
+                  <span key={interest} className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded text-emerald-100/60 font-bold uppercase hover:border-emerald-500/40 transition-colors">{interest}</span>
+                ))}
               </div>
-              <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
-                <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Cpu size={14} className="group-hover:animate-spin-slow" /> Other Skills</h4>
-                <div className="space-y-3">
-                  <div className="text-[10px] text-emerald-100/40 leading-tight">
-                    Working knowledge that allows me to adapt across security environments:
+              <div className="pt-2">
+                <div className="text-[8px] text-emerald-900 font-black uppercase tracking-[0.3em] mb-2 border-b border-emerald-900/20 pb-1">External</div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
+                    <Satellite size={12} className="text-emerald-900" /> Space Science
                   </div>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[9px] text-emerald-100/50 font-bold uppercase">
-                    <span>• Linux/Windows Logging</span>
-                    <span>• <IntelLink name="Wireshark" /> Analysis</span>
-                    <span>• <IntelLink name="MITRE ATT&CK" /></span>
-                    <span>• <IntelLink name="Python" /> (Log Parsing)</span>
-                    <span>• Basic Cloud (AWS)</span>
+                  <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
+                    <Globe size={12} className="text-emerald-900" /> Geography
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </WindowFrame>
-
-        <WindowFrame title="02_RESEARCH_TRACK" subtitle="Current_Focus">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
-                  <Target size={14} /> Currently Working On
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {[
-                    { t: "SOC Detection Lab", d: "Simulated enterprise environment; ingesting logs into SIEM, creating rules, and documenting workflows." },
-                    { t: "Incident Response Simulation", d: "Simulating phishing/malware incidents to practice structured response and remediation." },
-                    { t: "Log Correlation Practice", d: "Identifying multi-stage attacks and abnormal behavior through correlation scripts." }
-                  ].map((item, idx) => (
-                    <div key={idx} className="border-l border-emerald-900 pl-4 py-1 group/item animate-reveal" style={{ animationDelay: `${idx * 200 + 1000}ms` }}>
-                      <div className="text-[10px] text-emerald-400 font-black uppercase group-hover/item:text-emerald-300 transition-colors">{item.t}</div>
-                      <div className="text-[9px] text-emerald-100/40 leading-tight mt-1">{item.d}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-6 animate-reveal" style={{ animationDelay: '1500ms' }}>
-              <div className="space-y-4">
-                <h3 className="text-xs font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2">
-                  <BookOpen size={14} /> Interests
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {["Threat Intel", "Detection Eng", "IR & Forensics", "Scale Monitoring"].map(interest => (
-                    <span key={interest} className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded text-emerald-100/60 font-bold uppercase hover:border-emerald-500/40 transition-colors">{interest}</span>
-                  ))}
-                </div>
-                <div className="pt-2">
-                  <div className="text-[8px] text-emerald-900 font-black uppercase tracking-[0.3em] mb-2 border-b border-emerald-900/20 pb-1">External</div>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
-                      <Satellite size={12} className="text-emerald-900" /> Space Science
-                    </div>
-                    <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
-                      <Globe size={12} className="text-emerald-900" /> Geography
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </WindowFrame>
-      </div>
+        </div>
+      </WindowFrame>
     </div>
   );
 };
@@ -439,20 +445,20 @@ const Experience = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 pb-12">
+    <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="CHRONOLOGICAL_EXPERIENCE_LOG" subtitle="Service_History">
         <div className="space-y-12 py-4">
           {experiences.map((exp, i) => (
-            <div key={i} className="relative pl-8 border-l border-emerald-900/30 group animate-reveal" style={{ animationDelay: `${i * 150}ms` }}>
+            <div key={i} className="relative pl-6 sm:pl-8 border-l border-emerald-900/30 group animate-reveal" style={{ animationDelay: `${i * 150}ms` }}>
               <div className="absolute -left-1.5 top-0 w-3 h-3 bg-[#030704] border border-emerald-500 rounded-full group-hover:scale-150 group-hover:bg-emerald-500 transition-all duration-300 shadow-[0_0_10px_rgba(16,185,129,0)] group-hover:shadow-[0_0_10px_rgba(16,185,129,1)]" />
               <div className="flex flex-col mb-2">
                 <span className="text-[10px] font-black text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded tracking-tighter w-fit mb-2">{exp.year}</span>
-                <h4 className="text-emerald-100 font-bold text-lg tracking-tight uppercase italic group-hover:text-emerald-400 transition-colors">{exp.title}</h4>
+                <h4 className="text-emerald-100 font-bold text-sm sm:text-lg tracking-tight uppercase italic group-hover:text-emerald-400 transition-colors">{exp.title}</h4>
               </div>
               <ul className="space-y-1.5">
                 {exp.desc.map((line, li) => (
-                  <li key={li} className="text-emerald-100/40 text-xs leading-relaxed max-w-4xl flex gap-2">
-                    <span className="text-emerald-700 font-bold">»</span> {line}
+                  <li key={li} className="text-emerald-100/40 text-[10px] sm:text-xs leading-relaxed max-w-4xl flex gap-2">
+                    <span className="text-emerald-700 font-bold shrink-0">»</span> {line}
                   </li>
                 ))}
               </ul>
@@ -501,7 +507,7 @@ const Inventory = () => {
   ];
 
   return (
-    <div className="grid grid-cols-12 gap-6 pb-12">
+    <div className="grid grid-cols-12 gap-6 pb-6">
       <div className="col-span-12 lg:col-span-4 space-y-6">
         <WindowFrame title="ASSET_SPECIFICATIONS" subtitle="Inventory_Summary">
           <div className="space-y-4">
@@ -512,7 +518,7 @@ const Inventory = () => {
                 {[["Lab Environments", "02"], ["Detection Rules", "06"], ["Incident Playbooks", "02"], ["Analysis Scripts", "03"]].map(([l, v], i) => (
                   <div key={l} className="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded text-center animate-reveal" style={{ animationDelay: `${i * 100}ms` }}>
                     <div className="text-[8px] text-emerald-900 font-black uppercase mb-1">{l}</div>
-                    <div className="text-2xl font-black text-emerald-400 leading-none tracking-tighter">{v}</div>
+                    <div className="text-xl sm:text-2xl font-black text-emerald-400 leading-none tracking-tighter">{v}</div>
                   </div>
                 ))}
              </div>
@@ -525,9 +531,9 @@ const Inventory = () => {
             {assets.map((item, i) => (
               <details key={item.id} className="group border border-emerald-900/20 rounded bg-emerald-950/10 transition-all hover:border-emerald-500/30 animate-reveal" style={{ animationDelay: `${i * 150}ms` }}>
                 <summary className="flex items-center justify-between p-4 cursor-pointer list-none">
-                  <div className="flex items-center gap-4">
-                    <span className="text-[9px] font-black text-emerald-900 group-hover:text-emerald-500 transition-colors">{item.id}</span>
-                    <h5 className="text-xs font-black text-emerald-400 uppercase tracking-widest">{item.name}</h5>
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <span className="text-[9px] font-black text-emerald-900 group-hover:text-emerald-500 transition-colors shrink-0">{item.id}</span>
+                    <h5 className="text-[10px] sm:text-xs font-black text-emerald-400 uppercase tracking-widest">{item.name}</h5>
                   </div>
                   <div className="text-emerald-900 transition-transform duration-500 group-open:rotate-180 group-open:text-emerald-500"><ChevronRight size={14} /></div>
                 </summary>
@@ -542,7 +548,7 @@ const Inventory = () => {
                        <div className="text-[10px] text-emerald-300 font-bold uppercase">{item.focus}</div>
                      </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                     <span className="text-[8px] text-emerald-500 font-black uppercase tracking-widest">Tools:</span>
                     <div className="flex flex-wrap gap-2">
                       {item.tools.map(t => <span key={t} className="text-[8px] px-1.5 py-0.5 bg-emerald-500/10 text-emerald-500/70 border border-emerald-500/20 rounded uppercase font-bold">{t}</span>)}
@@ -564,7 +570,7 @@ const Contact = () => {
   const { displayedText: typedMsg } = useTypewriter(message, 15, 200);
 
   return (
-    <div className="max-w-xl mx-auto py-12">
+    <div className="max-w-xl mx-auto py-8 sm:py-12">
       <WindowFrame title="COMMUNICATION_UPLINK" subtitle="Contact_Protocol">
         <div className="space-y-8 text-center py-6">
           <div className="flex flex-col items-center gap-4 animate-reveal">
@@ -572,7 +578,7 @@ const Contact = () => {
                <div className="absolute inset-0 rounded-full border border-emerald-500/40 animate-ping opacity-20" />
                <Radio className="text-emerald-500 animate-pulse" size={32} />
              </div>
-             <h3 className="text-xl font-black text-white italic tracking-tighter uppercase">Signal Acquisition</h3>
+             <h3 className="text-lg sm:text-xl font-black text-white italic tracking-tighter uppercase">Signal Acquisition</h3>
           </div>
           
           <div className="text-[9px] text-emerald-500/50 font-mono min-h-[1.5rem] tracking-widest px-4">
@@ -582,7 +588,7 @@ const Contact = () => {
           <div className="space-y-4 animate-reveal" style={{ animationDelay: '1500ms' }}>
             <a href="mailto:hi@patelvivek.com" className="group flex flex-col items-center gap-1">
                <span className="text-[8px] text-emerald-900 font-black uppercase tracking-[0.3em]">Secure_Email</span>
-               <span className="text-emerald-400 font-black text-xl group-hover:text-white transition-all duration-300">hi@patelvivek.com</span>
+               <span className="text-emerald-400 font-black text-lg sm:text-xl group-hover:text-white transition-all duration-300">hi@patelvivek.com</span>
             </a>
           </div>
         </div>
@@ -595,22 +601,32 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Home');
   const [showTerminal, setShowTerminal] = useState(false);
+  const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo(0, 0);
+    }
+  }, [activeTab]);
 
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
 
+  const navItems = [
+    { id: 'Home', i: Eye, l: 'HOME' },
+    { id: 'Work', i: Briefcase, l: 'HISTORY' },
+    { id: 'Inventory', i: Database, l: 'ASSETS' },
+    { id: 'Contact', i: Radio, l: 'COMM' }
+  ];
+
   return (
-    <div className="fixed inset-0 bg-[#010302] text-emerald-100/80 flex font-mono overflow-hidden selection:bg-emerald-500 selection:text-black">
-      <nav className="w-20 border-r border-emerald-900/20 flex flex-col items-center py-8 bg-[#020503]/80 backdrop-blur-xl z-50">
+    <div className="fixed inset-0 bg-[#010302] text-emerald-100/80 flex flex-col sm:flex-row font-mono overflow-hidden selection:bg-emerald-500 selection:text-black">
+      {/* Desktop Sidebar */}
+      <nav className="hidden sm:flex w-20 border-r border-emerald-900/20 flex-col items-center py-8 bg-[#020503]/80 backdrop-blur-xl z-50">
         <div className="relative group cursor-pointer mb-12">
           <ShieldCheck className="text-emerald-500 w-8 h-8 animate-pulse" />
         </div>
         <div className="flex-1 flex flex-col gap-10">
-          {[
-            { id: 'Home', i: Eye, l: 'HOME' },
-            { id: 'Work', i: Briefcase, l: 'HISTORY' },
-            { id: 'Inventory', i: Database, l: 'ASSETS' },
-            { id: 'Contact', i: Radio, l: 'COMM' }
-          ].map(item => (
+          {navItems.map(item => (
             <button 
               key={item.id} 
               onClick={() => setActiveTab(item.id)} 
@@ -627,22 +643,34 @@ const App = () => {
         </div>
       </nav>
 
-      <main className="flex-1 flex flex-col min-w-0 z-10 relative">
-        <header className="h-16 border-b border-emerald-900/20 flex items-center justify-between px-8 bg-[#010302]/60 backdrop-blur-md">
-           <div className="text-xs font-black text-emerald-800 tracking-widest uppercase flex items-center gap-3">
-             <Crosshair size={14} className="text-emerald-500/50 animate-spin-slow" /> 
-             <ScrambleText text={`VIVEK_SOC_OPERATIONS_CENTER // ${activeTab.toUpperCase()}`} />
+      {/* Main Container */}
+      <main className="flex-1 flex flex-col min-w-0 z-10 relative overflow-hidden">
+        <header className="h-14 sm:h-16 border-b border-emerald-900/20 flex items-center justify-between px-4 sm:px-8 bg-[#010302]/60 backdrop-blur-md shrink-0 z-[60]">
+           <div className="text-[10px] sm:text-xs font-black text-emerald-800 tracking-widest uppercase flex items-center gap-3">
+             <Crosshair size={14} className="text-emerald-500/50 animate-spin-slow shrink-0" /> 
+             <div className="truncate max-w-[200px] sm:max-w-none">
+                <ScrambleText text={`VIVEK_SOC_OPERATIONS // ${activeTab.toUpperCase()}`} />
+             </div>
            </div>
-           <div className="flex gap-6 text-[9px] font-black text-emerald-900 uppercase">
+           
+           <div className="flex items-center gap-3 sm:gap-6 text-[9px] font-black text-emerald-900 uppercase">
              <div className="flex items-center gap-2">
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-               <span>Status: Active</span>
+               <span className="hidden xs:inline">Status: Active</span>
              </div>
+             <button onClick={() => setShowTerminal(!showTerminal)} className="sm:hidden p-1.5 border border-emerald-900/30 rounded text-emerald-500">
+               <TerminalIcon size={14} />
+             </button>
            </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-12 custom-scrollbar smooth-scroll">
-          <div className="max-w-6xl mx-auto">
+        {/* Scrollable Content Area */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-12 custom-scrollbar touch-pan-y"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <div className="max-w-6xl mx-auto pb-24 sm:pb-0">
             {activeTab === 'Home' && <Overview key="Home" />}
             {activeTab === 'Work' && <Experience key="Work" />}
             {activeTab === 'Inventory' && <Inventory key="Inventory" />}
@@ -652,45 +680,92 @@ const App = () => {
 
         {showTerminal && <KaliTerminal onClose={() => setShowTerminal(false)} />}
         
-        <footer className="h-8 border-t border-emerald-900/10 bg-[#020503] flex items-center px-8 text-[7px] font-black text-emerald-900 uppercase tracking-[0.3em]">
+        <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[7px] font-black text-emerald-900 uppercase tracking-[0.3em] shrink-0">
           DEFENSE_ACTIVE // SESSION_START: {new Date().toLocaleDateString()}
         </footer>
+
+        {/* Mobile Navigation Bar */}
+        <nav className="sm:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#020503]/90 border-t border-emerald-900/40 flex items-center justify-around px-4 z-[100] backdrop-blur-lg">
+          {navItems.map(item => (
+            <button 
+              key={item.id} 
+              onClick={() => setActiveTab(item.id)} 
+              className={`flex flex-col items-center gap-1 transition-all ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-900'}`}
+            >
+              <item.i size={18} />
+              <span className="text-[7px] font-black uppercase tracking-tighter">{item.l}</span>
+            </button>
+          ))}
+        </nav>
       </main>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
-        * { box-sizing: border-box; font-family: 'JetBrains Mono', monospace; scroll-behavior: smooth; }
+        
+        :root {
+          scrollbar-gutter: stable;
+        }
+
+        * { 
+          box-sizing: border-box; 
+          font-family: 'JetBrains Mono', monospace; 
+        }
+
+        html, body {
+          height: 100%;
+          width: 100%;
+          overflow: hidden; /* Prevent body from scrolling while nested container handles it */
+          position: fixed; /* Common trick to prevent iOS bounce scroll on body */
+        }
+
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #010302; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #064e3b; border-radius: 10px; }
+        
         .bg-scanline { background: linear-gradient(to bottom, transparent 50%, rgba(16, 185, 129, 0.5) 51%, transparent 51%); background-size: 100% 4px; }
+        
         @keyframes reveal {
           from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
           to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
         .animate-reveal { animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+        
         @keyframes slideUpReveal {
           from { transform: translateY(100%); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
         }
         .animate-slide-up-reveal { animation: slideUpReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes fadeInBlur {
-          from { opacity: 0; filter: blur(5px); }
-          to { opacity: 1; filter: blur(0); }
-        }
-        .animate-fade-in-blur { animation: fadeInBlur 1.5s ease-out forwards; }
+        
         @keyframes slideDown {
           from { max-height: 0; opacity: 0; }
-          to { max-height: 500px; opacity: 1; }
+          to { max-height: 800px; opacity: 1; }
         }
         .animate-slide-down { animation: slideDown 0.5s ease-out forwards; }
+        
         .animate-spin-slow { animation: spin 12s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
         @keyframes intel-pop {
           from { opacity: 0; transform: translate(-50%, 5px) scale(0.95); }
           to { opacity: 1; transform: translate(-50%, 0) scale(1); }
         }
         .animate-intel-pop { animation: intel-pop 0.2s ease-out forwards; }
+        
+        @keyframes slide-up {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        .animate-slide-up { animation: slide-up 0.3s ease-out forwards; }
+
+        .smooth-scroll {
+          scroll-behavior: smooth;
+        }
+
+        /* Fix for mobile touch momentum */
+        .touch-pan-y {
+          touch-action: pan-y;
+          -webkit-overflow-scrolling: touch;
+        }
       `}</style>
     </div>
   );
