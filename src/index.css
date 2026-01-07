@@ -3,5 +3,10 @@
 @tailwind utilities;
 
 :root {
+  background-color: #010302;
   color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
 }
