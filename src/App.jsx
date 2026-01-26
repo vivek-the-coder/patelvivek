@@ -23,8 +23,41 @@ import {
   Activity,
   Shield,
   BookOpen,
-  Satellite
+  Satellite,
+  Sparkles,
+  Zap,
+  AlertTriangle
 } from 'lucide-react';
+
+// --- API Utilities ---
+const apiKey = ""; // Environment handles this
+
+const callGemini = async (prompt, systemInstruction = "") => {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined
+  };
+
+  let delay = 1000;
+  for (let i = 0; i < 5; i++) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error('API Error');
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+    } catch (err) {
+      if (i === 4) throw err;
+      await new Promise(r => setTimeout(r, delay));
+      delay *= 2;
+    }
+  }
+};
 
 // --- Typewriter Hook ---
 const useTypewriter = (text, speed = 15, delay = 0) => {
@@ -54,7 +87,7 @@ const useTypewriter = (text, speed = 15, delay = 0) => {
   return { displayedText, isComplete };
 };
 
-// --- Text Scramble Hook (Hover effect) ---
+// --- Text Scramble Hook ---
 const useScramble = (text, active = true, speed = 40) => {
   const [display, setDisplay] = useState(text);
   const chars = '!<>-_\\/[]{}—=+*^?#________';
@@ -191,6 +224,7 @@ const KaliTerminal = ({ onClose }) => {
   
   Status: \x1b[38;5;46mLISTENING_ON_ALL_INTERFACES\x1b[0m
   Type 'help' for operational commands.
+  Type '✨ ask <question>' to query the Security Intelligence.
   `;
 
   useEffect(() => {
@@ -207,25 +241,35 @@ const KaliTerminal = ({ onClose }) => {
     setHistory(prev => [...prev, `\n\x1b[38;5;46m➜\x1b[0m \x1b[1m/root\x1b[0m $ ${cmd}`]);
     setIsProcessing(true);
 
-    switch (cleanCmd) {
-      case 'help':
-        setHistory(prev => [...prev, "DEFENSIVE_TOOLKIT:\n  status     - System health check\n  clear      - Reset buffer"]);
-        break;
-      case 'status':
-        setHistory(prev => [...prev, "SYSTEM_UPTIME: 14h 22m\nTELEMETRY_STATUS: CONNECTED\nACTIVE_THREATS: 0"]);
-        break;
-      case 'clear':
-        setHistory([initialMsg]);
-        break;
-      default:
-        setHistory(prev => [...prev, `\x1b[31m[!] Error: Command '${cleanCmd}' not recognized.\x1b[0m`]);
+    if (cleanCmd.startsWith('ask ') || cleanCmd.startsWith('✨')) {
+      const query = cleanCmd.replace(/^ask |^✨/, '').trim();
+      try {
+        const response = await callGemini(query, "You are a helpful cybersecurity SOC analyst terminal assistant. Provide concise, technical answers suitable for a terminal output.");
+        setHistory(prev => [...prev, `\n\x1b[38;5;46m[INTELLIGENCE_CORE]:\x1b[0m\n${response}`]);
+      } catch (err) {
+        setHistory(prev => [...prev, `\x1b[31m[!] Error connecting to intelligence core.\x1b[0m`]);
+      }
+    } else {
+      switch (cleanCmd) {
+        case 'help':
+          setHistory(prev => [...prev, "DEFENSIVE_TOOLKIT:\n  status     - System health check\n  clear      - Reset buffer\n  ask <txt>  - ✨ AI Security Assistant"]);
+          break;
+        case 'status':
+          setHistory(prev => [...prev, "SYSTEM_UPTIME: 14h 22m\nTELEMETRY_STATUS: CONNECTED\nACTIVE_THREATS: 0"]);
+          break;
+        case 'clear':
+          setHistory([initialMsg]);
+          break;
+        default:
+          setHistory(prev => [...prev, `\x1b[31m[!] Error: Command '${cleanCmd}' not recognized.\x1b[0m`]);
+      }
     }
     setIsProcessing(false);
     setInput("");
   };
 
   return (
-    <div className="fixed bottom-16 sm:bottom-0 left-0 right-0 sm:left-auto sm:right-0 sm:w-[450px] bg-[#020503] border-t-2 border-emerald-900/50 h-[40vh] sm:h-[400px] flex flex-col font-mono text-[11px] z-[150] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] animate-slide-up overflow-hidden">
+    <div className="fixed bottom-16 sm:bottom-0 left-0 right-0 sm:left-auto sm:right-0 sm:w-[500px] bg-[#020503] border-t-2 border-emerald-900/50 h-[50vh] sm:h-[450px] flex flex-col font-mono text-[11px] z-[150] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] animate-slide-up overflow-hidden">
       <div className="px-4 py-2 bg-[#051109] border-b border-emerald-500/10 flex justify-between items-center">
         <div className="flex items-center gap-4">
            <div className="flex gap-1.5">
@@ -265,6 +309,7 @@ const KaliTerminal = ({ onClose }) => {
               />
             </div>
           )}
+          {isProcessing && <div className="text-emerald-500 animate-pulse mt-2">PROCESSING_REQUEST...</div>}
         </div>
       </div>
     </div>
@@ -284,6 +329,63 @@ const WindowFrame = ({ title, children, active, subtitle }) => (
     <div className="relative flex-1 p-4 sm:p-6 overflow-visible">{children}</div>
   </div>
 );
+
+const ThreatAnalyzer = () => {
+  const [logInput, setLogInput] = useState("");
+  const [analysis, setAnalysis] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const analyzeThreat = async () => {
+    if (!logInput.trim()) return;
+    setLoading(true);
+    setAnalysis("");
+    try {
+      const response = await callGemini(
+        logInput,
+        "You are an expert SOC Level 2 Analyst. The user will provide a log snippet or a description of a security event. Analyze it technically: identify potential tactics/techniques (referencing MITRE ATT&CK if possible), assess risk level (Low/Medium/High/Critical), and provide 3 clear remediation steps. Keep formatting clean and use bullet points."
+      );
+      setAnalysis(response);
+    } catch (err) {
+      setAnalysis("Error: Failed to connect to Analysis Engine. Please try again.");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="relative">
+        <textarea
+          value={logInput}
+          onChange={(e) => setLogInput(e.target.value)}
+          placeholder="Paste log snippet or security observation here..."
+          className="w-full h-24 bg-[#010302] border border-emerald-900/50 rounded p-3 text-[11px] text-emerald-100 placeholder:text-emerald-900/50 focus:border-emerald-500/50 outline-none resize-none custom-scrollbar"
+        />
+        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+           <button 
+             onClick={analyzeThreat}
+             disabled={loading || !logInput}
+             className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded text-emerald-500 font-black text-[9px] uppercase tracking-widest disabled:opacity-30 transition-all"
+           >
+             {loading ? <Zap size={12} className="animate-spin" /> : <Sparkles size={12} />}
+             ✨ Run Analysis
+           </button>
+        </div>
+      </div>
+
+      {(analysis || loading) && (
+        <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded animate-reveal">
+          <div className="flex items-center gap-2 mb-3 border-b border-emerald-500/10 pb-2">
+            <AlertTriangle size={14} className="text-emerald-500" />
+            <span className="text-[10px] font-black uppercase text-emerald-500 tracking-widest">Analysis_Report</span>
+          </div>
+          <div className="text-[11px] text-emerald-100/70 whitespace-pre-wrap leading-relaxed">
+            {analysis || "INITIALIZING THREAT_ENGINE..."}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Overview = () => {
   const bio = "I am a cybersecurity-focused Computer Science student specializing in defensive security, threat detection, and incident response. I work with security telemetry from endpoints, networks, and identity systems to detect malicious activity, investigate alerts, and improve organizational security posture. My work is centered around SOC operations, not offensive hacking.";
@@ -347,7 +449,22 @@ const Overview = () => {
         </div>
       </WindowFrame>
 
-      <WindowFrame title="02_RESEARCH_TRACK" subtitle="Current_Focus">
+      <WindowFrame title="02_INTELLIGENCE_CENTER" active={false} subtitle="Active_Investigation">
+         <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-emerald-500/10 rounded border border-emerald-500/20">
+                <Sparkles size={20} className="text-emerald-500" />
+              </div>
+              <div>
+                <h3 className="text-xs font-black text-white uppercase tracking-widest italic">Live Threat Investigator</h3>
+                <p className="text-[9px] text-emerald-500/60 font-bold uppercase tracking-tighter mt-1">Simulate SOC analysis with real-time logic</p>
+              </div>
+            </div>
+            <ThreatAnalyzer />
+         </div>
+      </WindowFrame>
+
+      <WindowFrame title="03_RESEARCH_TRACK" subtitle="Current_Focus">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
             <div className="space-y-4">
@@ -378,17 +495,6 @@ const Overview = () => {
                 {["Threat Intel", "Detection Eng", "IR & Forensics", "Scale Monitoring"].map(interest => (
                   <span key={interest} className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded text-emerald-100/60 font-bold uppercase hover:border-emerald-500/40 transition-colors">{interest}</span>
                 ))}
-              </div>
-              <div className="pt-2">
-                <div className="text-[8px] text-emerald-900 font-black uppercase tracking-[0.3em] mb-2 border-b border-emerald-900/20 pb-1">External</div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
-                    <Satellite size={12} className="text-emerald-900" /> Space Science
-                  </div>
-                  <div className="flex items-center gap-2 text-[9px] text-emerald-100/30">
-                    <Globe size={12} className="text-emerald-900" /> Geography
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -430,16 +536,6 @@ const Experience = () => {
         "Performed packet analysis using Wireshark.",
         "Studied system logging, authentication mechanisms, and access control models.",
         "Built basic Linux and Windows lab environments for security experimentation."
-      ]
-    },
-    {
-      year: "2023",
-      title: "Independent Learning — Cybersecurity Foundations",
-      desc: [
-        "Self-studied core cybersecurity concepts: networking, Linux, security basics, and threat models.",
-        "Learned fundamentals of logs, telemetry, and system monitoring.",
-        "Followed public breach reports and incident analyses to understand real-world attacks.",
-        "Practiced basic scripting and automation to support security tasks."
       ]
     }
   ];
@@ -495,14 +591,6 @@ const Inventory = () => {
       focus: "Log correlation & investigation", 
       desc: "Scripts to parse and correlate logs across multiple sources to identify multi-stage attack behavior and anomalies.", 
       tools: ["Python", "Wazuh", "ELK"] 
-    },
-    { 
-      id: "INV-004", 
-      name: "Threat Intel Tracker", 
-      type: "Mini Tool", 
-      focus: "Threat intelligence", 
-      desc: "A small system to track indicators of compromise and correlate them with detection alerts.", 
-      tools: ["VirusTotal", "AbuseIPDB"] 
     }
   ];
 
@@ -681,7 +769,7 @@ const App = () => {
         {showTerminal && <KaliTerminal onClose={() => setShowTerminal(false)} />}
         
         <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[7px] font-black text-emerald-900 uppercase tracking-[0.3em] shrink-0">
-          DEFENSE_ACTIVE // SESSION_START: {new Date().toLocaleDateString()}
+          DEFENSE_ACTIVE // INTELLIGENCE_CORE_ACTIVE // SESSION_START: {new Date().toLocaleDateString()}
         </footer>
 
         {/* Mobile Navigation Bar */}
@@ -714,8 +802,8 @@ const App = () => {
         html, body {
           height: 100%;
           width: 100%;
-          overflow: hidden; /* Prevent body from scrolling while nested container handles it */
-          position: fixed; /* Common trick to prevent iOS bounce scroll on body */
+          overflow: hidden;
+          position: fixed;
         }
 
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
@@ -761,7 +849,6 @@ const App = () => {
           scroll-behavior: smooth;
         }
 
-        /* Fix for mobile touch momentum */
         .touch-pan-y {
           touch-action: pan-y;
           -webkit-overflow-scrolling: touch;
