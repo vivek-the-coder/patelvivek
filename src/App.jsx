@@ -667,6 +667,8 @@ const SecurityLab = () => {
 };
 
 const Development = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
+
   const projects = [
     {
       id: "DEV-001",
@@ -675,7 +677,9 @@ const Development = () => {
       desc: "A comprehensive agricultural marketplace connecting farmers to global exporters. Features government schemes, export hub, community forums, and equipment marketplace with multi-language support.",
       tech: ["Next.js", "React", "Tailwind CSS", "Lucide Icons"],
       status: "Live",
-      link: "https://agriconnectproject.vercel.app"
+      link: "https://agriconnectproject.vercel.app",
+      github: "https://github.com/vivek-the-coder/Agriconnect",
+      features: ["Government Schemes Directory", "Export Hub", "Community Forums", "Equipment Marketplace", "Multi-language Support", "Responsive Design"]
     },
     {
       id: "DEV-002",
@@ -684,7 +688,9 @@ const Development = () => {
       desc: "Professional website for a sustainable textile dyes and specialty chemicals manufacturer. Features company overview, product catalogs, and ZDHC/bluesign certification highlights.",
       tech: ["Vite", "React", "Tailwind CSS", "Schema.org SEO"],
       status: "Live",
-      link: "https://colourdye.vercel.app"
+      link: "https://colourdye.vercel.app",
+      github: "https://github.com/vivek-the-coder/colourdye",
+      features: ["Company Overview", "Product Catalogs", "ZDHC/bluesign Certification", "SEO Optimization", "Schema.org Structured Data", "Modern UI/UX"]
     },
     {
       id: "DEV-003",
@@ -693,7 +699,9 @@ const Development = () => {
       desc: "Creative marketing intelligence platform for agencies to manage campaigns, track leads, and monitor growth performance in a unified workspace.",
       tech: ["Next.js", "React", "Tailwind CSS", "Analytics API"],
       status: "Live",
-      link: "https://socia-agency.vercel.app"
+      link: "https://socia-agency.vercel.app",
+      github: "https://github.com/vivek-the-coder/socia-agency",
+      features: ["Campaign Management", "Lead Tracking", "Growth Analytics", "Unified Dashboard", "Real-time Metrics", "Agency Tools"]
     },
     {
       id: "DEV-004",
@@ -702,7 +710,9 @@ const Development = () => {
       desc: "Toy rental and resale marketplace promoting sustainability. Families can rent, buy, or sell preloved toys with verified user profiles and community features.",
       tech: ["Next.js", "React", "Tailwind CSS", "Razorpay"],
       status: "Live",
-      link: "https://secondsmile.vercel.app"
+      link: "https://secondsmile.vercel.app",
+      github: "https://github.com/vivek-the-coder/secondsmile",
+      features: ["Toy Rental System", "Resale Marketplace", "User Profiles", "Razorpay Integration", "Sustainability Focus", "Community Features"]
     },
     {
       id: "DEV-005",
@@ -711,7 +721,9 @@ const Development = () => {
       desc: "Cafe and restaurant website featuring full menu display, coffee culture blog, table reservation system, and location details with contact information.",
       tech: ["Next.js", "React", "Tailwind CSS", "Static Gen"],
       status: "Live",
-      link: "https://cafetable.vercel.app"
+      link: "https://cafetable.vercel.app",
+      github: "https://github.com/vivek-the-coder/cafe-web-design",
+      features: ["Full Menu Display", "Coffee Culture Blog", "Table Reservation", "Location Details", "Contact Integration", "Static Generation"]
     },
     {
       id: "DEV-006",
@@ -720,7 +732,9 @@ const Development = () => {
       desc: "Pet products e-commerce platform with integrated Razorpay payment gateway for seamless checkout experience.",
       tech: ["Vite", "React", "Tailwind CSS", "Razorpay SDK"],
       status: "Live",
-      link: "https://paw-perfection.vercel.app"
+      link: "https://paw-perfection.vercel.app",
+      github: "https://github.com/vivek-the-coder/PawPerfection",
+      features: ["Pet Products Catalog", "Razorpay Checkout", "E-commerce Cart", "Product Categories", "Mobile Responsive", "Fast Checkout"]
     },
     {
       id: "DEV-007",
@@ -729,12 +743,95 @@ const Development = () => {
       desc: "Luxury car detailing studio website showcasing ceramic coating, PPF protection, and body shop services. Features portfolio gallery and appointment booking.",
       tech: ["Next.js", "React", "Tailwind CSS", "Image Gallery"],
       status: "Live",
-      link: "https://cardetailing-eta.vercel.app"
+      link: "https://cardetailing-eta.vercel.app",
+      github: "https://github.com/vivek-the-coder/car-detailing-site",
+      features: ["Ceramic Coating Info", "PPF Protection Details", "Portfolio Gallery", "Appointment Booking", "Body Shop Services", "Luxury Branding"]
     }
   ];
 
+  const ProjectModal = ({ project, onClose }) => {
+    if (!project) return null;
+
+    return (
+      <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#030704] border border-emerald-500/40 rounded-lg shadow-[0_0_50px_rgba(16,185,129,0.2)]">
+          <div className="sticky top-0 bg-[#030704] border-b border-emerald-900/30 p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-[9px] font-black text-emerald-900">{project.id}</span>
+              <h3 className="text-sm font-black text-emerald-400 uppercase tracking-wider">{project.name}</h3>
+              <span className="text-[8px] px-2 py-0.5 rounded font-black uppercase bg-emerald-500/20 text-emerald-400">
+                {project.status}
+              </span>
+            </div>
+            <button onClick={onClose} className="p-1 hover:text-red-500 text-emerald-500/50 transition-colors">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="p-6 space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[10px] text-emerald-900 uppercase font-black">Type:</div>
+              <span className="text-sm text-emerald-300 font-bold">{project.type}</span>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Description</h4>
+              <p className="text-[12px] text-emerald-100/60 leading-relaxed">{project.desc}</p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Key Features</h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {project.features.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2 text-[10px] text-emerald-100/50">
+                    <span className="text-emerald-500 mt-0.5">»</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Tech Stack</h4>
+              <div className="flex flex-wrap gap-2">
+                {project.tech.map(t => (
+                  <span key={t} className="text-[9px] px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded text-emerald-400/80 font-bold uppercase">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-emerald-900/30">
+              <a 
+                href={project.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded text-emerald-400 font-black text-[10px] uppercase tracking-widest transition-all"
+              >
+                <Globe size={14} />
+                Live Site
+              </a>
+              <a 
+                href={project.github} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded text-emerald-400 font-black text-[10px] uppercase tracking-widest transition-all"
+              >
+                <Github size={14} />
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-6 pb-6">
+    <>
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="DEVELOPMENT_PROJECTS" active={true} subtitle="Code_Repository">
         <div className="space-y-6">
           <div className="text-[11px] text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
@@ -743,7 +840,12 @@ const Development = () => {
           
           <div className="grid gap-4">
             {projects.map((proj, i) => (
-              <a key={proj.id} href={proj.link} target="_blank" rel="noopener noreferrer" className="block border border-emerald-900/30 rounded bg-emerald-950/10 overflow-hidden animate-reveal hover:border-emerald-500/40 transition-all" style={{ animationDelay: `${i * 150}ms` }}>
+              <div 
+                key={proj.id} 
+                onClick={() => setSelectedProject(proj)}
+                className="cursor-pointer border border-emerald-900/30 rounded bg-emerald-950/10 overflow-hidden animate-reveal hover:border-emerald-500/40 transition-all" 
+                style={{ animationDelay: `${i * 150}ms` }}
+              >
                 <div className="flex items-center justify-between p-4 border-b border-emerald-900/20 bg-emerald-500/5">
                   <div className="flex items-center gap-3">
                     <span className="text-[9px] font-black text-emerald-900">{proj.id}</span>
@@ -771,7 +873,7 @@ const Development = () => {
                     ))}
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -799,6 +901,7 @@ const Development = () => {
         </div>
       </WindowFrame>
     </div>
+    </>
   );
 };
 
