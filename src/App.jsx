@@ -329,7 +329,7 @@ const WindowFrame = ({ title, children, active, subtitle }) => (
         <div className={`w-1 h-1 rounded-full ${active ? 'bg-emerald-500 animate-pulse' : 'bg-emerald-900'}`} />
         <ScrambleText text={title} />
       </span>
-      {subtitle && <span className="hidden sm:inline text-[8px] text-emerald-900 font-bold uppercase">{subtitle}</span>}
+      {subtitle && <span className="hidden sm:inline text-[8px] text-emerald-700 font-bold uppercase">{subtitle}</span>}
     </div>
     <div className="relative flex-1 p-4 sm:p-6 overflow-visible">{children}</div>
   </div>
@@ -363,7 +363,7 @@ const ThreatAnalyzer = () => {
           value={logInput}
           onChange={(e) => setLogInput(e.target.value)}
           placeholder="Paste log snippet or security observation here..."
-          className="w-full h-24 bg-[#010302] border border-emerald-900/50 rounded p-3 text-[11px] text-emerald-100 placeholder:text-emerald-900/50 focus:border-emerald-500/50 outline-none resize-none custom-scrollbar"
+          className="w-full h-24 bg-[#010302] border border-emerald-700/50 rounded p-3 text-[11px] text-emerald-100 placeholder:text-emerald-700/50 focus:border-emerald-500/50 outline-none resize-none custom-scrollbar"
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
            <button 
@@ -415,7 +415,7 @@ const Overview = () => {
             
             <div className="flex gap-4">
               {[Linkedin, Github, Mail].map((Icon, i) => (
-                <a key={i} href="#" className="p-2 border border-emerald-900/30 rounded text-emerald-900 hover:text-emerald-500 hover:border-emerald-500/50 transition-all bg-emerald-500/5">
+                <a key={i} href="#" className="p-2 border border-emerald-700/30 rounded text-emerald-700 hover:text-emerald-500 hover:border-emerald-500/50 transition-all bg-emerald-500/5">
                   <Icon size={16} />
                 </a>
               ))}
@@ -612,7 +612,7 @@ const SecurityLab = () => {
               <div key={lab.id} className="border border-emerald-900/30 rounded bg-emerald-950/10 overflow-hidden animate-reveal" style={{ animationDelay: `${i * 150}ms` }}>
                 <div className="flex items-center justify-between p-4 border-b border-emerald-900/20 bg-emerald-500/5">
                   <div className="flex items-center gap-3">
-                    <span className="text-[9px] font-black text-emerald-900">{lab.id}</span>
+                    <span className="text-[9px] font-black text-emerald-700">{lab.id}</span>
                     <h4 className="text-xs font-black text-emerald-400 uppercase tracking-wider">{lab.name}</h4>
                     <span className={`text-[8px] px-2 py-0.5 rounded font-black uppercase ${lab.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
                       {lab.status}
@@ -757,7 +757,7 @@ const Development = () => {
         <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#030704] border border-emerald-500/40 rounded-lg shadow-[0_0_50px_rgba(16,185,129,0.2)]">
           <div className="sticky top-0 bg-[#030704] border-b border-emerald-900/30 p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] font-black text-emerald-900">{project.id}</span>
+              <span className="text-[9px] font-black text-emerald-700">{project.id}</span>
               <h3 className="text-sm font-black text-emerald-400 uppercase tracking-wider">{project.name}</h3>
               <span className="text-[8px] px-2 py-0.5 rounded font-black uppercase bg-emerald-500/20 text-emerald-400">
                 {project.status}
@@ -770,17 +770,17 @@ const Development = () => {
 
           <div className="p-6 space-y-6">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-[10px] text-emerald-900 uppercase font-black">Type:</div>
+              <div className="flex items-center gap-2 text-[10px] text-emerald-700 uppercase font-black">Type:</div>
               <span className="text-sm text-emerald-300 font-bold">{project.type}</span>
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Description</h4>
+              <h4 className="text-[10px] text-emerald-700 uppercase font-black">Description</h4>
               <p className="text-[12px] text-emerald-100/60 leading-relaxed">{project.desc}</p>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Key Features</h4>
+              <h4 className="text-[10px] text-emerald-700 uppercase font-black">Key Features</h4>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {project.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-2 text-[10px] text-emerald-100/50">
@@ -792,7 +792,7 @@ const Development = () => {
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-[10px] text-emerald-900 uppercase font-black">Tech Stack</h4>
+              <h4 className="text-[10px] text-emerald-700 uppercase font-black">Tech Stack</h4>
               <div className="flex flex-wrap gap-2">
                 {project.tech.map(t => (
                   <span key={t} className="text-[9px] px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded text-emerald-400/80 font-bold uppercase">
@@ -848,7 +848,7 @@ const Development = () => {
               >
                 <div className="flex items-center justify-between p-4 border-b border-emerald-900/20 bg-emerald-500/5">
                   <div className="flex items-center gap-3">
-                    <span className="text-[9px] font-black text-emerald-900">{proj.id}</span>
+                    <span className="text-[9px] font-black text-emerald-700">{proj.id}</span>
                     <h4 className="text-xs font-black text-emerald-400 uppercase tracking-wider">{proj.name}</h4>
                     <span className="text-[8px] px-2 py-0.5 rounded font-black uppercase bg-emerald-500/20 text-emerald-400">
                       {proj.status}
@@ -859,7 +859,7 @@ const Development = () => {
                 
                 <div className="p-4 space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-emerald-900 uppercase font-black">Type:</span>
+                    <span className="text-[10px] text-emerald-700 uppercase font-black">Type:</span>
                     <span className="text-[10px] text-emerald-300 font-bold">{proj.type}</span>
                   </div>
                   
@@ -889,7 +889,7 @@ const Development = () => {
               { category: "Integrations", items: ["Razorpay", "Vercel", "SEO", "Analytics"] }
             ].map((stack) => (
               <div key={stack.category} className="p-3 border border-emerald-900/20 rounded bg-emerald-500/5">
-                <h5 className="text-[9px] font-black text-emerald-900 uppercase mb-2">{stack.category}</h5>
+                <h5 className="text-[9px] font-black text-emerald-700 uppercase mb-2">{stack.category}</h5>
                 <div className="flex flex-wrap gap-1">
                   {stack.items.map(item => (
                     <span key={item} className="text-[8px] text-emerald-400/70 font-bold">{item}</span>
@@ -927,7 +927,7 @@ const Contact = () => {
 
           <div className="space-y-4 animate-reveal" style={{ animationDelay: '1500ms' }}>
             <a href="mailto:hi@patelvivek.com" className="group flex flex-col items-center gap-1">
-               <span className="text-[10px] text-emerald-900 font-black uppercase tracking-[0.3em]">Secure_Email</span>
+               <span className="text-[10px] text-emerald-700 font-black uppercase tracking-[0.3em]">Secure_Email</span>
                <span className="text-emerald-400 font-black text-lg sm:text-xl group-hover:text-white transition-all duration-300">hi@patelvivek.com</span>
             </a>
           </div>
@@ -971,13 +971,13 @@ const App = () => {
             <button 
               key={item.id} 
               onClick={() => setActiveTab(item.id)} 
-              className={`flex flex-col items-center gap-1.5 transition-all group relative ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-900 hover:text-emerald-600'}`}
+              className={`flex flex-col items-center gap-1.5 transition-all group relative ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-700 hover:text-emerald-600'}`}
             >
               <item.i size={20} className={`${activeTab === item.id ? 'animate-pulse scale-110' : ''}`} />
               <span className="text-[10px] font-black uppercase tracking-tighter">{item.l}</span>
             </button>
           ))}
-          <button onClick={() => setShowTerminal(!showTerminal)} className={`flex flex-col items-center gap-1.5 transition-all group ${showTerminal ? 'text-emerald-400' : 'text-emerald-900 hover:text-emerald-600'}`}>
+          <button onClick={() => setShowTerminal(!showTerminal)} className={`flex flex-col items-center gap-1.5 transition-all group ${showTerminal ? 'text-emerald-400' : 'text-emerald-700 hover:text-emerald-600'}`}>
             <TerminalIcon size={20} />
             <span className="text-[10px] font-black uppercase tracking-tighter">SHELL</span>
           </button>
@@ -1022,7 +1022,7 @@ const App = () => {
 
         {showTerminal && <KaliTerminal onClose={() => setShowTerminal(false)} />}
         
-        <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[10px] font-black text-emerald-900 uppercase tracking-[0.3em] shrink-0">
+        <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[10px] font-black text-emerald-700 uppercase tracking-[0.3em] shrink-0">
           DEFENSE_ACTIVE // INTELLIGENCE_CORE_ACTIVE // SESSION_START: {new Date().toLocaleDateString()}
         </footer>
 
@@ -1032,7 +1032,7 @@ const App = () => {
             <button 
               key={item.id} 
               onClick={() => setActiveTab(item.id)} 
-              className={`flex flex-col items-center gap-1 transition-all ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-900'}`}
+              className={`flex flex-col items-center gap-1 transition-all ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-700'}`}
             >
               <item.i size={18} />
               <span className="text-[10px] font-black uppercase tracking-tighter">{item.l}</span>
