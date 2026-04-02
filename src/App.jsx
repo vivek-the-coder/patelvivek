@@ -926,9 +926,9 @@ const Contact = () => {
           </div>
 
           <div className="space-y-4 animate-reveal" style={{ animationDelay: '1500ms' }}>
-            <a href="mailto:hi@patelvivek.com" className="group flex flex-col items-center gap-1">
+            <a href="mailto:vivek@patelvivek.in" className="group flex flex-col items-center gap-1">
                <span className="text-[10px] text-emerald-700 font-black uppercase tracking-[0.3em]">Secure_Email</span>
-               <span className="text-emerald-400 font-black text-lg sm:text-xl group-hover:text-white transition-all duration-300">hi@patelvivek.com</span>
+               <span className="text-emerald-400 font-black text-lg sm:text-xl group-hover:text-white transition-all duration-300">vivek@patelvivek.in</span>
             </a>
           </div>
         </div>
