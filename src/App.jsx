@@ -429,19 +429,19 @@ const Overview = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 animate-reveal" style={{ animationDelay: '800ms' }}>
             <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
-              <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={14} className="group-hover:rotate-12 transition-transform" /> Defensive Security & SOC</h4>
-              <div className="text-[11px] text-emerald-100/40 leading-relaxed mb-3">
+              <h4 className="text-emerald-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={14} className="group-hover:rotate-12 transition-transform" /> Defensive Security & SOC</h4>
+              <div className="text-xs text-emerald-100/40 leading-relaxed mb-3">
                 I primarily work with <IntelLink name="SIEM" /> platforms and <IntelLink name="MS Defender XDR" /> to monitor, analyze, and respond to security events. 
                 My focus is on understanding attacker behavior, correlating events across systems, and reducing noise so real threats are detected early.
               </div>
             </div>
             <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
-              <h4 className="text-emerald-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2"><Cpu size={14} className="group-hover:animate-spin-slow" /> Other Skills</h4>
+              <h4 className="text-emerald-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Cpu size={14} className="group-hover:animate-spin-slow" /> Other Skills</h4>
               <div className="space-y-3">
-                <div className="text-[10px] text-emerald-100/40 leading-tight">
+                <div className="text-xs text-emerald-100/40 leading-tight">
                   Working knowledge that allows me to adapt across security environments:
                 </div>
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[9px] text-emerald-100/50 font-bold uppercase">
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-emerald-100/50 font-bold uppercase">
                   <span>• Linux/Windows Logging</span>
                   <span>• <IntelLink name="Wireshark" /> Analysis</span>
                   <span>• <IntelLink name="MITRE ATT&CK" /></span>
@@ -462,7 +462,7 @@ const Overview = () => {
               </div>
               <div>
                 <h3 className="text-xs font-black text-white uppercase tracking-widest italic">Live Threat Investigator</h3>
-                <p className="text-[9px] text-emerald-500/60 font-bold uppercase tracking-tighter mt-1">Simulate SOC analysis with real-time logic</p>
+                <p className="text-[10px] text-emerald-500/60 font-bold uppercase tracking-tighter mt-1">Simulate SOC analysis with real-time logic</p>
               </div>
             </div>
             <ThreatAnalyzer />
@@ -484,7 +484,7 @@ const Overview = () => {
                 ].map((item, idx) => (
                   <div key={idx} className="border-l border-emerald-900 pl-4 py-1 group/item animate-reveal" style={{ animationDelay: `${idx * 200 + 1000}ms` }}>
                     <div className="text-[10px] text-emerald-400 font-black uppercase group-hover/item:text-emerald-300 transition-colors">{item.t}</div>
-                    <div className="text-[9px] text-emerald-100/40 leading-tight mt-1">{item.d}</div>
+                    <div className="text-[10px] text-emerald-100/40 leading-tight mt-1">{item.d}</div>
                   </div>
                 ))}
               </div>
@@ -498,7 +498,7 @@ const Overview = () => {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {["Threat Intel", "Detection Eng", "IR & Forensics", "Scale Monitoring"].map(interest => (
-                  <span key={interest} className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded text-emerald-100/60 font-bold uppercase hover:border-emerald-500/40 transition-colors">{interest}</span>
+                  <span key={interest} className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded text-emerald-100/60 font-bold uppercase hover:border-emerald-500/40 transition-colors">{interest}</span>
                 ))}
               </div>
             </div>
@@ -603,7 +603,7 @@ const SecurityLab = () => {
     <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="SECURITY_LAB_ENVIRONMENT" active={true} subtitle="Active_Sandboxes">
         <div className="space-y-6">
-          <div className="text-[11px] text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
+          <div className="text-xs text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
             Hands-on security laboratories for practicing defensive operations, threat detection, and incident response in controlled environments.
           </div>
           
@@ -622,7 +622,7 @@ const SecurityLab = () => {
                 </div>
                 
                 <div className="p-4 space-y-4">
-                  <p className="text-[11px] text-emerald-100/50 leading-relaxed">{lab.desc}</p>
+                  <p className="text-xs text-emerald-100/50 leading-relaxed">{lab.desc}</p>
                   
                   <div className="flex flex-wrap gap-2">
                     {lab.tools.map(tool => (
@@ -636,7 +636,7 @@ const SecurityLab = () => {
                     {Object.entries(lab.metrics).map(([key, val]) => (
                       <div key={key} className="text-center">
                         <div className="text-lg font-black text-emerald-400">{val}</div>
-                        <div className="text-[7px] text-emerald-900 uppercase font-black tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                        <div className="text-[7px] text-emerald-800 uppercase font-black tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
                       </div>
                     ))}
                   </div>
@@ -657,7 +657,7 @@ const SecurityLab = () => {
           ].map((op, i) => (
             <div key={op.title} className="p-3 border border-emerald-900/20 rounded bg-emerald-500/5 animate-reveal" style={{ animationDelay: `${i * 100}ms` }}>
               <h5 className="text-[10px] font-black text-emerald-400 uppercase mb-1">{op.title}</h5>
-              <p className="text-[9px] text-emerald-100/40 leading-tight">{op.desc}</p>
+              <p className="text-[10px] text-emerald-100/40 leading-tight">{op.desc}</p>
             </div>
           ))}
         </div>
@@ -834,7 +834,7 @@ const Development = () => {
       <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="DEVELOPMENT_PROJECTS" active={true} subtitle="Code_Repository">
         <div className="space-y-6">
-          <div className="text-[11px] text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
+          <div className="text-xs text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
             Production web applications built with modern frameworks. Portfolio of client and personal projects spanning e-commerce, corporate sites, SaaS platforms, and service marketplaces.
           </div>
           
@@ -859,11 +859,11 @@ const Development = () => {
                 
                 <div className="p-4 space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[9px] text-emerald-900 uppercase font-black">Type:</span>
+                    <span className="text-[10px] text-emerald-900 uppercase font-black">Type:</span>
                     <span className="text-[10px] text-emerald-300 font-bold">{proj.type}</span>
                   </div>
                   
-                  <p className="text-[11px] text-emerald-100/50 leading-relaxed">{proj.desc}</p>
+                  <p className="text-xs text-emerald-100/50 leading-relaxed">{proj.desc}</p>
                   
                   <div className="flex flex-wrap gap-2">
                     {proj.tech.map(t => (
@@ -921,13 +921,13 @@ const Contact = () => {
              <h3 className="text-lg sm:text-xl font-black text-white italic tracking-tighter uppercase">Signal Acquisition</h3>
           </div>
           
-          <div className="text-[9px] text-emerald-500/50 font-mono min-h-[1.5rem] tracking-widest px-4">
+          <div className="text-xs text-emerald-500/50 font-mono min-h-[1.5rem] tracking-widest px-4">
             {typedMsg}
           </div>
 
           <div className="space-y-4 animate-reveal" style={{ animationDelay: '1500ms' }}>
             <a href="mailto:hi@patelvivek.com" className="group flex flex-col items-center gap-1">
-               <span className="text-[8px] text-emerald-900 font-black uppercase tracking-[0.3em]">Secure_Email</span>
+               <span className="text-[10px] text-emerald-900 font-black uppercase tracking-[0.3em]">Secure_Email</span>
                <span className="text-emerald-400 font-black text-lg sm:text-xl group-hover:text-white transition-all duration-300">hi@patelvivek.com</span>
             </a>
           </div>
@@ -974,12 +974,12 @@ const App = () => {
               className={`flex flex-col items-center gap-1.5 transition-all group relative ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-900 hover:text-emerald-600'}`}
             >
               <item.i size={20} className={`${activeTab === item.id ? 'animate-pulse scale-110' : ''}`} />
-              <span className="text-[7px] font-black uppercase tracking-tighter">{item.l}</span>
+              <span className="text-[10px] font-black uppercase tracking-tighter">{item.l}</span>
             </button>
           ))}
           <button onClick={() => setShowTerminal(!showTerminal)} className={`flex flex-col items-center gap-1.5 transition-all group ${showTerminal ? 'text-emerald-400' : 'text-emerald-900 hover:text-emerald-600'}`}>
             <TerminalIcon size={20} />
-            <span className="text-[7px] font-black uppercase tracking-tighter">SHELL</span>
+            <span className="text-[10px] font-black uppercase tracking-tighter">SHELL</span>
           </button>
         </div>
       </nav>
@@ -1022,7 +1022,7 @@ const App = () => {
 
         {showTerminal && <KaliTerminal onClose={() => setShowTerminal(false)} />}
         
-        <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[7px] font-black text-emerald-900 uppercase tracking-[0.3em] shrink-0">
+        <footer className="hidden sm:flex h-8 border-t border-emerald-900/10 bg-[#020503] items-center px-8 text-[10px] font-black text-emerald-900 uppercase tracking-[0.3em] shrink-0">
           DEFENSE_ACTIVE // INTELLIGENCE_CORE_ACTIVE // SESSION_START: {new Date().toLocaleDateString()}
         </footer>
 
@@ -1035,7 +1035,7 @@ const App = () => {
               className={`flex flex-col items-center gap-1 transition-all ${activeTab === item.id ? 'text-emerald-400' : 'text-emerald-900'}`}
             >
               <item.i size={18} />
-              <span className="text-[7px] font-black uppercase tracking-tighter">{item.l}</span>
+              <span className="text-[10px] font-black uppercase tracking-tighter">{item.l}</span>
             </button>
           ))}
         </nav>
@@ -1050,7 +1050,9 @@ const App = () => {
 
         * { 
           box-sizing: border-box; 
-          font-family: 'JetBrains Mono', monospace; 
+          font-family: 'JetBrains Mono', monospace;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
 
         html, body {
