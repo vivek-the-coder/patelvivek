@@ -670,39 +670,66 @@ const Development = () => {
   const projects = [
     {
       id: "DEV-001",
-      name: "Log Analyzer Script",
-      type: "Python Tool",
-      desc: "Automated log parsing and anomaly detection script for Windows Event Logs. Generates summary reports with suspicious activity highlights.",
-      tech: ["Python", "Pandas", "Regex"],
-      status: "Completed",
-      link: "#"
+      name: "AgriConnect",
+      type: "E-Commerce Platform",
+      desc: "A comprehensive agricultural marketplace connecting farmers to global exporters. Features government schemes, export hub, community forums, and equipment marketplace with multi-language support.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Lucide Icons"],
+      status: "Live",
+      link: "https://agriconnectproject.vercel.app"
     },
     {
       id: "DEV-002",
-      name: "Threat Intel Dashboard",
-      type: "Web Application",
-      desc: "React-based dashboard for visualizing threat intelligence feeds and IOC correlations. Features real-time indicator tracking.",
-      tech: ["React", "D3.js", "REST API"],
-      status: "In Progress",
-      link: "#"
+      name: "Colourtex",
+      type: "Corporate Website",
+      desc: "Professional website for a sustainable textile dyes and specialty chemicals manufacturer. Features company overview, product catalogs, and ZDHC/bluesign certification highlights.",
+      tech: ["Vite", "React", "Tailwind CSS", "Schema.org SEO"],
+      status: "Live",
+      link: "https://colourdye.vercel.app"
     },
     {
       id: "DEV-003",
-      name: "SIEM Query Builder",
-      type: "Automation Tool",
-      desc: "Graphical query builder for SIEM platforms. Simplifies complex query construction for SOC analysts.",
-      tech: ["TypeScript", "Node.js", "Electron"],
-      status: "Planning",
-      link: "#"
+      name: "SOCIA Agency",
+      type: "SaaS Dashboard",
+      desc: "Creative marketing intelligence platform for agencies to manage campaigns, track leads, and monitor growth performance in a unified workspace.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Analytics API"],
+      status: "Live",
+      link: "https://socia-agency.vercel.app"
     },
     {
       id: "DEV-004",
-      name: "Network Scanner",
-      type: "Security Tool",
-      desc: "Lightweight network reconnaissance tool for internal asset discovery and service enumeration.",
-      tech: ["Go", "gRPC", "SQLite"],
-      status: "Completed",
-      link: "#"
+      name: "SecondSmile",
+      type: "Marketplace",
+      desc: "Toy rental and resale marketplace promoting sustainability. Families can rent, buy, or sell preloved toys with verified user profiles and community features.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Razorpay"],
+      status: "Live",
+      link: "https://secondsmile.vercel.app"
+    },
+    {
+      id: "DEV-005",
+      name: "The Table at Splatter",
+      type: "Restaurant Website",
+      desc: "Cafe and restaurant website featuring full menu display, coffee culture blog, table reservation system, and location details with contact information.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Static Gen"],
+      status: "Live",
+      link: "https://cafetable.vercel.app"
+    },
+    {
+      id: "DEV-006",
+      name: "PawPerfection",
+      type: "Pet E-Commerce",
+      desc: "Pet products e-commerce platform with integrated Razorpay payment gateway for seamless checkout experience.",
+      tech: ["Vite", "React", "Tailwind CSS", "Razorpay SDK"],
+      status: "Live",
+      link: "https://paw-perfection.vercel.app"
+    },
+    {
+      id: "DEV-007",
+      name: "LuxureDetails",
+      type: "Service Website",
+      desc: "Luxury car detailing studio website showcasing ceramic coating, PPF protection, and body shop services. Features portfolio gallery and appointment booking.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Image Gallery"],
+      status: "Live",
+      link: "https://cardetailing-eta.vercel.app"
     }
   ];
 
@@ -711,21 +738,17 @@ const Development = () => {
       <WindowFrame title="DEVELOPMENT_PROJECTS" active={true} subtitle="Code_Repository">
         <div className="space-y-6">
           <div className="text-[11px] text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
-            Software development projects focused on security tooling, automation, and custom solutions for SOC operations and defensive security workflows.
+            Production web applications built with modern frameworks. Portfolio of client and personal projects spanning e-commerce, corporate sites, SaaS platforms, and service marketplaces.
           </div>
           
           <div className="grid gap-4">
             {projects.map((proj, i) => (
-              <div key={proj.id} className="border border-emerald-900/30 rounded bg-emerald-950/10 overflow-hidden animate-reveal" style={{ animationDelay: `${i * 150}ms` }}>
+              <a key={proj.id} href={proj.link} target="_blank" rel="noopener noreferrer" className="block border border-emerald-900/30 rounded bg-emerald-950/10 overflow-hidden animate-reveal hover:border-emerald-500/40 transition-all" style={{ animationDelay: `${i * 150}ms` }}>
                 <div className="flex items-center justify-between p-4 border-b border-emerald-900/20 bg-emerald-500/5">
                   <div className="flex items-center gap-3">
                     <span className="text-[9px] font-black text-emerald-900">{proj.id}</span>
                     <h4 className="text-xs font-black text-emerald-400 uppercase tracking-wider">{proj.name}</h4>
-                    <span className={`text-[8px] px-2 py-0.5 rounded font-black uppercase ${
-                      proj.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 
-                      proj.status === 'In Progress' ? 'bg-blue-500/20 text-blue-400' : 
-                      'bg-amber-500/20 text-amber-400'
-                    }`}>
+                    <span className="text-[8px] px-2 py-0.5 rounded font-black uppercase bg-emerald-500/20 text-emerald-400">
                       {proj.status}
                     </span>
                   </div>
@@ -748,7 +771,7 @@ const Development = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -758,10 +781,10 @@ const Development = () => {
         <div className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { category: "Languages", items: ["Python", "JavaScript", "TypeScript", "Go", "Bash"] },
-              { category: "Frontend", items: ["React", "Vue.js", "Tailwind", "D3.js"] },
-              { category: "Backend", items: ["Node.js", "FastAPI", "Go", "PostgreSQL"] },
-              { category: "Security", items: ["YARA", "Sigma", "Splunk SDK", "REST APIs"] }
+              { category: "Frontend", items: ["Next.js", "React", "Vite", "Tailwind CSS"] },
+              { category: "Languages", items: ["TypeScript", "JavaScript", "Python", "Go"] },
+              { category: "Backend", items: ["Node.js", "REST APIs", "PostgreSQL", "MongoDB"] },
+              { category: "Integrations", items: ["Razorpay", "Vercel", "SEO", "Analytics"] }
             ].map((stack) => (
               <div key={stack.category} className="p-3 border border-emerald-900/20 rounded bg-emerald-500/5">
                 <h5 className="text-[9px] font-black text-emerald-900 uppercase mb-2">{stack.category}</h5>
