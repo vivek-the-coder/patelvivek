@@ -285,7 +285,7 @@ const KaliTerminal = ({ onClose }) => {
              <TerminalIcon size={12}/> SECURE_SHELL@VIVEK_SOC
            </span>
         </div>
-        <button onClick={onClose} className="hover:text-red-500 text-emerald-500/20 transition-colors"><X size={14}/></button>
+        <button onClick={onClose} className="hover:text-red-500 text-emerald-500/60 transition-colors"><X size={14}/></button>
       </div>
       
       <div className="flex flex-1 min-h-0">
@@ -430,7 +430,7 @@ const Overview = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 animate-reveal" style={{ animationDelay: '800ms' }}>
             <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
               <h4 className="text-emerald-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={14} className="group-hover:rotate-12 transition-transform" /> Defensive Security & SOC</h4>
-              <div className="text-xs text-emerald-100/40 leading-relaxed mb-3">
+              <div className="text-xs text-emerald-100/80 leading-relaxed mb-3">
                 I primarily work with <IntelLink name="SIEM" /> platforms and <IntelLink name="MS Defender XDR" /> to monitor, analyze, and respond to security events. 
                 My focus is on understanding attacker behavior, correlating events across systems, and reducing noise so real threats are detected early.
               </div>
@@ -438,10 +438,10 @@ const Overview = () => {
             <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded group hover:bg-emerald-500/10 transition-all duration-300">
               <h4 className="text-emerald-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Cpu size={14} className="group-hover:animate-spin-slow" /> Other Skills</h4>
               <div className="space-y-3">
-                <div className="text-xs text-emerald-100/40 leading-tight">
+                <div className="text-xs text-emerald-100/70 leading-tight">
                   Working knowledge that allows me to adapt across security environments:
                 </div>
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-emerald-100/50 font-bold uppercase">
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-emerald-100/70 font-bold uppercase">
                   <span>• Linux/Windows Logging</span>
                   <span>• <IntelLink name="Wireshark" /> Analysis</span>
                   <span>• <IntelLink name="MITRE ATT&CK" /></span>
@@ -462,7 +462,7 @@ const Overview = () => {
               </div>
               <div>
                 <h3 className="text-xs font-black text-white uppercase tracking-widest italic">Live Threat Investigator</h3>
-                <p className="text-[10px] text-emerald-500/60 font-bold uppercase tracking-tighter mt-1">Simulate SOC analysis with real-time logic</p>
+                <p className="text-[10px] text-emerald-500/80 font-bold uppercase tracking-tighter mt-1">Simulate SOC analysis with real-time logic</p>
               </div>
             </div>
             <ThreatAnalyzer />
@@ -484,7 +484,7 @@ const Overview = () => {
                 ].map((item, idx) => (
                   <div key={idx} className="border-l border-emerald-900 pl-4 py-1 group/item animate-reveal" style={{ animationDelay: `${idx * 200 + 1000}ms` }}>
                     <div className="text-[10px] text-emerald-400 font-black uppercase group-hover/item:text-emerald-300 transition-colors">{item.t}</div>
-                    <div className="text-[10px] text-emerald-100/40 leading-tight mt-1">{item.d}</div>
+                    <div className="text-[10px] text-emerald-100/80 leading-tight mt-1">{item.d}</div>
                   </div>
                 ))}
               </div>
@@ -558,7 +558,7 @@ const Experience = () => {
               </div>
               <ul className="space-y-1.5">
                 {exp.desc.map((line, li) => (
-                  <li key={li} className="text-emerald-100/40 text-[10px] sm:text-xs leading-relaxed max-w-4xl flex gap-2">
+                  <li key={li} className="text-emerald-100/80 text-[10px] sm:text-xs leading-relaxed max-w-4xl flex gap-2">
                     <span className="text-emerald-700 font-bold shrink-0">»</span> {line}
                   </li>
                 ))}
@@ -603,7 +603,7 @@ const SecurityLab = () => {
     <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="SECURITY_LAB_ENVIRONMENT" active={true} subtitle="Active_Sandboxes">
         <div className="space-y-6">
-          <div className="text-xs text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
+          <div className="text-xs text-emerald-100/80 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
             Hands-on security laboratories for practicing defensive operations, threat detection, and incident response in controlled environments.
           </div>
           
@@ -622,7 +622,7 @@ const SecurityLab = () => {
                 </div>
                 
                 <div className="p-4 space-y-4">
-                  <p className="text-xs text-emerald-100/50 leading-relaxed">{lab.desc}</p>
+                  <p className="text-xs text-emerald-100/80 leading-relaxed">{lab.desc}</p>
                   
                   <div className="flex flex-wrap gap-2">
                     {lab.tools.map(tool => (
@@ -657,7 +657,7 @@ const SecurityLab = () => {
           ].map((op, i) => (
             <div key={op.title} className="p-3 border border-emerald-900/20 rounded bg-emerald-500/5 animate-reveal" style={{ animationDelay: `${i * 100}ms` }}>
               <h5 className="text-[10px] font-black text-emerald-400 uppercase mb-1">{op.title}</h5>
-              <p className="text-[10px] text-emerald-100/40 leading-tight">{op.desc}</p>
+              <p className="text-[10px] text-emerald-100/80 leading-tight">{op.desc}</p>
             </div>
           ))}
         </div>
@@ -776,14 +776,14 @@ const Development = () => {
 
             <div className="space-y-2">
               <h4 className="text-[10px] text-emerald-700 uppercase font-black">Description</h4>
-              <p className="text-[12px] text-emerald-100/60 leading-relaxed">{project.desc}</p>
+              <p className="text-[12px] text-emerald-100/80 leading-relaxed">{project.desc}</p>
             </div>
 
             <div className="space-y-3">
               <h4 className="text-[10px] text-emerald-700 uppercase font-black">Key Features</h4>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {project.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2 text-[10px] text-emerald-100/50">
+                  <li key={i} className="flex items-start gap-2 text-[10px] text-emerald-100/80">
                     <span className="text-emerald-500 mt-0.5">»</span>
                     {feature}
                   </li>
@@ -834,7 +834,7 @@ const Development = () => {
       <div className="flex flex-col gap-6 pb-6">
       <WindowFrame title="DEVELOPMENT_PROJECTS" active={true} subtitle="Code_Repository">
         <div className="space-y-6">
-          <div className="text-xs text-emerald-100/60 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
+          <div className="text-xs text-emerald-100/80 leading-relaxed border-l-2 border-emerald-500/30 pl-4">
             Production web applications built with modern frameworks. Portfolio of client and personal projects spanning e-commerce, corporate sites, SaaS platforms, and service marketplaces.
           </div>
           
@@ -863,7 +863,7 @@ const Development = () => {
                     <span className="text-[10px] text-emerald-300 font-bold">{proj.type}</span>
                   </div>
                   
-                  <p className="text-xs text-emerald-100/50 leading-relaxed">{proj.desc}</p>
+                  <p className="text-xs text-emerald-100/80 leading-relaxed">{proj.desc}</p>
                   
                   <div className="flex flex-wrap gap-2">
                     {proj.tech.map(t => (
